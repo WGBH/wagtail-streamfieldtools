@@ -39,10 +39,17 @@ class RenditionAwareStructBlock(StructBlock):
         """
         Finds the appropriate rendition
         """
-        template = self._rendition_set_config.get(
+        rendition = self._rendition_set_config.get(
             value['render_as']
-        ).get('path_to_template')
-        return render_to_string(template, {'self': value})
+        )
+        template = rendition.get('path_to_template')
+        return render_to_string(
+            template,
+            {
+                'self': value,
+                'image_rendition': rendition.get('image_rendition', 'original')
+            }
+        )
 
     def to_python(self, value):
         # This is where the rendition needs to be injected.
