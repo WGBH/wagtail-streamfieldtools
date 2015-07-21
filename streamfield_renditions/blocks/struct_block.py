@@ -4,7 +4,7 @@ from django.template.loader import render_to_string
 
 from wagtail.wagtailcore.blocks import StructBlock, StructValue, TextBlock
 
-from .base import WAGTAIL_RENDITION_SETS, UnavailableRendition
+from .base import WAGTAIL_RENDITION_SETS, UnavailableRenditionSet
 from .field_block import RenditionSetChoiceBlock
 
 
@@ -14,7 +14,7 @@ class RenditionAwareStructBlock(StructBlock):
         try:
             rendition_set_config = WAGTAIL_RENDITION_SETS[rendition_set]
         except KeyError:
-            raise UnavailableRendition(
+            raise UnavailableRenditionSet(
                 'No Rendition set found with key {}'.format(rendition_set)
             )
         self._rendition_set_config = rendition_set_config

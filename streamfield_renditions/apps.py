@@ -2,12 +2,12 @@ from __future__ import unicode_literals
 
 from django.apps import AppConfig
 from django.core.exceptions import ImproperlyConfigured
-from django import template
-from django.utils.six import iteritems, iterkeys
+from django.template import TemplateDoesNotExist
+from django.utils.six import iteritems
 
 from .blocks.base import WAGTAIL_RENDITION_SETS
-
-REQUIRED_KEYS = ('verbose', 'path_to_template')
+from .utils import verify_rendition_has_required_data, \
+    verify_rendition_template
 
 
 class MalformedRenditionSet(ImproperlyConfigured):
@@ -25,9 +25,7 @@ class StreamFieldRenditionsAppConfig(AppConfig):
         """
         for key, rendition_set in iteritems(WAGTAIL_RENDITION_SETS):
             for rendition_set_key, config in iteritems(rendition_set):
-                if not all(
-                    rend_key in iterkeys(config) for rend_key in REQUIRED_KEYS
-                ):
+                if verify_rendition_has_required_data(config) is False:
                     raise MalformedRenditionSet(
                         "WAGTAIL_RENDITION_SETS['{}']['{}'] is an "
                         "improperly configured rendition. All renditions "
@@ -35,20 +33,13 @@ class StreamFieldRenditionsAppConfig(AppConfig):
                         "'path_to_template'.".format(key, rendition_set_key)
                     )
                 else:
-                    template_path = config['path_to_template']
-                    try:
-                        t = template.loader.get_template(
-                            template_path
-                        )
-                    except template.TemplateDoesNotExist:
-                        raise template.TemplateDoesNotExist(
+                    if verify_rendition_template(config) is False:
+                        raise TemplateDoesNotExist(
                             "WAGTAIL_RENDITION_SETS['{}']['{}']['{}'] points "
                             "to a template ('{}') that does not exist.".format(
                                 key,
                                 rendition_set_key,
                                 'path_to_template',
-                                template_path
+                                config.get('template_path')
                             )
                         )
-                    else:
-                        del t

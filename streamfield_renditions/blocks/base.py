@@ -9,7 +9,7 @@ class InvalidRendition(Exception):
     pass
 
 
-class UnavailableRendition(Exception):
+class UnavailableRenditionSet(Exception):
     pass
 
 
