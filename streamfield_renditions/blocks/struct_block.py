@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django.template.loader import render_to_string
 
-from wagtail.wagtailcore.blocks import StructBlock, StructValue
+from wagtail.wagtailcore.blocks import StructBlock, StructValue, TextBlock
 
 from .base import WAGTAIL_RENDITION_SETS, UnavailableRendition
 from .field_block import RenditionSetChoiceBlock
@@ -18,6 +18,17 @@ class RenditionAwareStructBlock(StructBlock):
                 'No Rendition set found with key {}'.format(rendition_set)
             )
         self._rendition_set_config = rendition_set_config
+        local_blocks.append(
+            (
+                'addl_classes',
+                TextBlock(
+                    label='Additional Classes',
+                    required=False,
+                    help_text="Enter any additional classes you'd like to add "
+                              "to this module's containing div."
+                )
+            )
+        )
         local_blocks.append(
             (
                 'render_as',
@@ -47,7 +58,10 @@ class RenditionAwareStructBlock(StructBlock):
             template,
             {
                 'self': value,
-                'image_rendition': rendition.get('image_rendition', 'original')
+                'image_rendition': rendition.get(
+                    'image_rendition', 'original'
+                ),
+                'addl_classes': value['addl_classes']
             }
         )
 
