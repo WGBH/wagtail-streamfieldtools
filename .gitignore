@@ -1,0 +1,35 @@
+# Compiled source #
+###################
+build/
+dist/
+*.egg-info/
+*.pyc
+
+# Compiled docs #
+###############
+docs/_build/
+
+# Packages #
+############
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+*.db
+
+# OS generated files #
+######################
+.DS_Store
+.coverage
+htmlcov
+htmlcov/*
