@@ -1,22 +1,36 @@
 from __future__ import unicode_literals
+from collections import OrderedDict
 
-from django.template.loader import render_to_string
+from django.utils import six
 
 from wagtail.wagtailcore.blocks import StructBlock, StructValue, TextBlock
 
-from .base import WAGTAIL_RENDITION_SETS, UnavailableRenditionSet
+from .base import WAGTAIL_RENDITION_SETS, Rendition, InvalidRendition
 from .field_block import RenditionSetChoiceBlock
 
 
 class RenditionAwareStructBlock(StructBlock):
 
-    def __init__(self, rendition_set, local_blocks, **kwargs):
-        try:
-            rendition_set_config = WAGTAIL_RENDITION_SETS[rendition_set]
-        except KeyError:
-            raise UnavailableRenditionSet(
-                'No Rendition set found with key {}'.format(rendition_set)
-            )
+    def __init__(self, local_blocks, core_renditions,
+                 addl_renditions_settings_key=None, **kwargs):
+        rendition_set_config = OrderedDict()
+        for rendition in core_renditions:
+            if isinstance(rendition, Rendition):
+                rendition_set_config[rendition.short_name] = rendition
+            else:
+                raise InvalidRendition(
+                    "Only instances of streamfield_renditions.blocks."
+                    "Rendition can be passed as `core_renditions`."
+                )
+
+        addl_rendition_set_config = WAGTAIL_RENDITION_SETS.get(
+            addl_renditions_settings_key
+        )
+        if addl_rendition_set_config:
+            for short_name, config in six.iteritems(addl_rendition_set_config):
+                r = Rendition(short_name, **config)
+                rendition_set_config[r.short_name] = r
+
         self._rendition_set_config = rendition_set_config
         local_blocks.append(
             (
@@ -53,14 +67,10 @@ class RenditionAwareStructBlock(StructBlock):
         rendition = self._rendition_set_config.get(
             value['render_as']
         )
-        template = rendition.get('path_to_template')
-        return render_to_string(
-            template,
+        return rendition.template.render(
             {
                 'self': value,
-                'image_rendition': rendition.get(
-                    'image_rendition', 'original'
-                ),
+                'image_rendition': rendition.image_rendition or 'original',
                 'addl_classes': value['addl_classes']
             }
         )

@@ -12,7 +12,7 @@ class RenditionAwareImageChooserBlock(RenditionMixIn, ImageChooserBlock):
     def get_image_rendition(self, value):
         if value:
             return value.get_rendition(
-                self.rendition.get('image_rendition', 'original')
+                self.rendition.image_rendition or 'original'
             )
         else:
             return ''

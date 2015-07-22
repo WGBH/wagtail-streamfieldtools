@@ -1,3 +1,5 @@
+from django.utils.six import iteritems
+
 from wagtail.wagtailcore.blocks import ChoiceBlock
 
 
@@ -7,8 +9,8 @@ class RenditionSetChoiceBlock(ChoiceBlock):
                  **kwargs):
 
         choices = [
-            (key, value.get('verbose'))
-            for key, value in rendition_set_config.iteritems()
+            (rendition.short_name, rendition.verbose_name)
+            for rendition_key, rendition in iteritems(rendition_set_config)
         ]
 
         super(RenditionSetChoiceBlock, self).__init__(
