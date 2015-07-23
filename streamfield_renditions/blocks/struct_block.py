@@ -19,7 +19,7 @@ class TemplateRequired(Exception):
     pass
 
 
-class RenditionAwareStructBlock(StructBlock):
+class MultiRenditionStructBlock(StructBlock):
 
     def __init__(self, local_blocks, core_renditions,
                  addl_renditions_settings_key=None, **kwargs):
@@ -65,7 +65,7 @@ class RenditionAwareStructBlock(StructBlock):
             )
         )
 
-        super(RenditionAwareStructBlock, self).__init__(
+        super(MultiRenditionStructBlock, self).__init__(
             local_blocks=local_blocks,
             **kwargs
         )
@@ -102,22 +102,21 @@ class RenditionAwareStructBlock(StructBlock):
         return StructValue(self, struct_value_list)
 
 
-class RenditionAwareNestedStructBlock(RenditionMixIn, StructBlock):
+class RenditionAwareStructBlock(RenditionMixIn, StructBlock):
 
     class Meta:
         template = None
 
     def render(self, value):
-        template = self.meta.template
-        if template is None:
+        if self.meta.template is None:
             raise TemplateRequired(
                 "{} does not specify a template. "
-                "RenditionAwareNestedStructBlock subclasses must specify "
+                "RenditionAwareStructBlock subclasses must specify "
                 "a template.".format(self.__class__.__name__)
             )
         else:
             return render_to_string(
-                template,
+                self.meta.template,
                 {
                     'self': value,
                     'image_rendition': self.rendition.image_rendition
