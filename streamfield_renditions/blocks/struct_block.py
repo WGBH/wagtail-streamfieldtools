@@ -1,12 +1,22 @@
 from __future__ import unicode_literals
 from collections import OrderedDict
 
+from django.template.loader import render_to_string
 from django.utils import six
 
 from wagtail.wagtailcore.blocks import StructBlock, StructValue, TextBlock
 
-from .base import WAGTAIL_RENDITION_SETS, Rendition, InvalidRendition
+from .base import (
+    InvalidRendition,
+    Rendition,
+    RenditionMixIn,
+    WAGTAIL_RENDITION_SETS
+)
 from .field_block import RenditionSetChoiceBlock
+
+
+class TemplateRequired(Exception):
+    pass
 
 
 class RenditionAwareStructBlock(StructBlock):
@@ -90,3 +100,27 @@ class RenditionAwareStructBlock(StructBlock):
                 to_append = child_block.get_default()
             struct_value_list.append((name, to_append))
         return StructValue(self, struct_value_list)
+
+
+class RenditionAwareNestedStructBlock(RenditionMixIn, StructBlock):
+
+    class Meta:
+        template = None
+
+    def render(self, value):
+        template = self.meta.template
+        if template is None:
+            raise TemplateRequired(
+                "{} does not specify a template. "
+                "RenditionAwareNestedStructBlock subclasses must specify "
+                "a template.".format(self.__class__.__name__)
+            )
+        else:
+            return render_to_string(
+                template,
+                {
+                    'self': value,
+                    'image_rendition': self.rendition.image_rendition
+                    or 'original'
+                }
+            )

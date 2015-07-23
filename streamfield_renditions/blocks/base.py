@@ -45,6 +45,9 @@ class Rendition(object):
                 "`path_to_template` or `template_string` argument."
             )
 
+    def __str__(self):
+        return self.verbose_name
+
     @property
     def template(self):
         return self._template
