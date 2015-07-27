@@ -56,12 +56,12 @@ class Rendition(object):
 class RenditionMixIn(object):
 
     def __init__(self, *args, **kwargs):
-        self._rendition = {}
+        self._rendition = None
         super(RenditionMixIn, self).__init__(*args, **kwargs)
 
     @property
     def rendition(self):
-        return self._rendition or {}
+        return self._rendition
 
     @rendition.setter
     def rendition(self, value):
