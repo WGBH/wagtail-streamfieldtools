@@ -115,8 +115,16 @@ class RenditionAwareStructBlock(RenditionMixIn, StructBlock):
                 "a template.".format(self.__class__.__name__)
             )
         else:
+            try:
+                template = getattr(
+                    self.meta,
+                    '{}_template'.format(self.rendition.short_name)
+                )
+            except AttributeError:
+                template = self.meta.template
+
             return render_to_string(
-                self.meta.template,
+                template,
                 {
                     'self': value,
                     'image_rendition': self.rendition.image_rendition
