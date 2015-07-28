@@ -118,7 +118,7 @@ class RenditionAwareStructBlock(RenditionMixIn, StructBlock):
             try:
                 template = getattr(
                     self.meta,
-                    '{}_template'.format(self.rendition.short_name)
+                    'template_{}'.format(self.rendition.short_name)
                 )
             except AttributeError:
                 template = self.meta.template

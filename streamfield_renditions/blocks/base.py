@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+import re
 
 from django.conf import settings
 from django.template import Template
@@ -13,6 +14,10 @@ class InvalidRendition(Exception):
     pass
 
 
+class InvalidRenditionShortName(Exception):
+    pass
+
+
 class NoTemplateProvided(Exception):
     pass
 
@@ -24,8 +29,13 @@ class Rendition(object):
                  image_rendition=None):
         if six.PY2:
             short_name = force_text(short_name)
-
-        self.short_name = short_name
+        if not re.match(r'^[A-Za-z0-9_]+$', short_name):
+            raise InvalidRenditionShortName(
+                'Rendition `short_name` values must be comprised of only '
+                'alphanumeric characters and underscores.'
+            )
+        else:
+            self.short_name = short_name
         self.verbose_name = verbose_name
         self.description = description
         self.image_rendition = image_rendition or ''
