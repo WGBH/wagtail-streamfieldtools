@@ -10,14 +10,14 @@ register = template.Library()
 @register.tag(name="image")
 def image(parser, token):
     bits = token.split_contents()[1:]
-    image_var = bits[0]
+    image_expr = parser.compile_filter(bits[0])
     filter_spec = bits[1]
     bits = bits[2:]
 
     if len(bits) == 2 and bits[0] == 'as':
         # token is of the form {% image self.photo max-320x200 as img %}
         return VariableOrStringLiteralImageNode(
-            image_var,
+            image_expr,
             filter_spec,
             output_var_name=bits[1]
         )
@@ -38,7 +38,7 @@ def image(parser, token):
             attrs[name] = parser.compile_filter(value)
 
         return VariableOrStringLiteralImageNode(
-            image_var,
+            image_expr,
             filter_spec,
             attrs=attrs
         )
@@ -46,8 +46,8 @@ def image(parser, token):
 
 class VariableOrStringLiteralImageNode(ImageNode):
 
-    def __init__(self, image_var_name, filter_spec, output_var_name=None, attrs={}):
-        self.image_var = template.Variable(image_var_name)
+    def __init__(self, image_expr, filter_spec, output_var_name=None, attrs={}):
+        self.image_expr = image_expr
         self.output_var_name = output_var_name
         self.attrs = attrs
         self.filter_spec_raw = filter_spec
