@@ -46,7 +46,8 @@ def image(parser, token):
 
 class VariableOrStringLiteralImageNode(ImageNode):
 
-    def __init__(self, image_expr, filter_spec, output_var_name=None, attrs={}):
+    def __init__(self, image_expr, filter_spec, output_var_name=None,
+                 attrs={}):
         self.image_expr = image_expr
         self.output_var_name = output_var_name
         self.attrs = attrs
