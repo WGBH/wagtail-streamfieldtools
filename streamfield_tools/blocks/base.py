@@ -79,7 +79,7 @@ class RenditionMixIn(object):
             pass
         elif not isinstance(value, Rendition):
             raise InvalidRendition(
-                'Renditions must be instances of streamfield_renditions.'
+                'Renditions must be instances of streamfield_tools.'
                 'blocks.base.Rendition'
             )
         else:

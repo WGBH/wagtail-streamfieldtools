@@ -29,7 +29,7 @@ class MultiRenditionStructBlock(StructBlock):
                 rendition_set_config[rendition.short_name] = rendition
             else:
                 raise InvalidRendition(
-                    "Only instances of streamfield_renditions.blocks."
+                    "Only instances of streamfield_tools.blocks."
                     "Rendition can be passed as `core_renditions`."
                 )
 
