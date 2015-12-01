@@ -2,7 +2,7 @@
 wagtail-streamfieldtools
 ========================
 
-A suite of tools that extends `Wagtail <https://wagtail.io/>`_'s already-awesome `StreamField <http://docs.wagtail.io/en/v1.0/topics/streamfield.html>`_ to make it even more flexible/versatile/useful!
+A suite of tools that extends `Wagtail <https://wagtail.io/>`_'s already-awesome `StreamField <http://docs.wagtail.io/en/latest/topics/streamfield.html>`_ to make it even more flexible/versatile/useful!
 
 Includes:
 
