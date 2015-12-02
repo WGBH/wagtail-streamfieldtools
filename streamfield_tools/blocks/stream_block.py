@@ -7,7 +7,6 @@ class RenditionAwareStreamValue(RenditionMixIn, StreamValue):
 
     def __init__(self, stream_block, stream_data, is_lazy=False,
                  raw_text=None, rendition=None):
-        """"""
         super(RenditionAwareStreamValue, self).__init__(
             stream_block=stream_block,
             stream_data=stream_data,
