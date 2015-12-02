@@ -39,6 +39,13 @@
 },
 {
     "fields": {
+        "spec": "original"
+    },
+    "model": "wagtailimages.filter",
+    "pk": 4
+},
+{
+    "fields": {
         "image": 1,
         "focal_point_key": "",
         "filter": 2,
@@ -72,5 +79,17 @@
     },
     "model": "wagtailimages.rendition",
     "pk": 3
+},
+{
+    "fields": {
+        "image": 1,
+        "focal_point_key": "",
+        "filter": 4,
+        "width": 300,
+        "file": "images/test_image.original.png",
+        "height": 300
+    },
+    "model": "wagtailimages.rendition",
+    "pk": 4
 }
 ]

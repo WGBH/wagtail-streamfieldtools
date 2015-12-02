@@ -10,33 +10,35 @@ from .base import RenditionMixIn
 class RenditionAwareImageChooserBlock(RenditionMixIn, ImageChooserBlock):
 
     def get_image_rendition(self, value):
+        to_return = ''
         if value:
-            return value.get_rendition(
-                self.rendition.image_rendition or 'original'
+            to_return = value.get_rendition(
+                getattr(self.rendition, 'image_rendition', 'original')
             )
-        else:
-            return ''
+        return to_return
 
     def render_basic(self, value):
         image = self.get_image_rendition(value)
+        to_return = ''
         if image:
-            return image.img_tag()
-        else:
-            return ''
+            to_return = image.img_tag()
+        return to_return
 
 
 class RenditionAwareLazyLoadImageChooserBlock(RenditionAwareImageChooserBlock):
 
     def render_basic(self, value):
         image = self.get_image_rendition(value)
+        to_return = ''
         if image:
-            return mark_safe(
-                '<img class="lazy" data-original="{url}" '
-                'alt="{alt_text}"/>'.format(
+            to_return = mark_safe(
+                '<img class="lazy" data-original="{url}" width="{width}" '
+                'height="{height}" alt="{alt_text}"/>'.format(
                     url=image.url,
                     alt_text=value.title,
+                    width=image.width,
+                    height=image.height
                 )
             )
 
-        else:
-            return ''
+        return to_return

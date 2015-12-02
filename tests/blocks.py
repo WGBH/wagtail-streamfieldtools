@@ -2,7 +2,8 @@ from streamfield_tools.blocks import (
     Rendition,
     MultiRenditionStructBlock,
     RenditionAwareLazyLoadImageChooserBlock,
-    RenditionAwareImageChooserBlock
+    RenditionAwareImageChooserBlock,
+    RenditionAwareListBlock
 )
 
 rendition_aware_test_block = MultiRenditionStructBlock(
@@ -19,6 +20,15 @@ rendition_aware_test_block = MultiRenditionStructBlock(
             RenditionAwareImageChooserBlock(
                 icon='image',
                 label='Image'
+            )
+        ),
+        (
+            'image_list',
+            RenditionAwareListBlock(
+                RenditionAwareImageChooserBlock(
+                    icon='image',
+                    label='Image'
+                )
             )
         )
     ],

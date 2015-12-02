@@ -4,11 +4,17 @@ from django.template.loader import TemplateDoesNotExist
 from django.test import TestCase
 from django.test.utils import override_settings
 
+from wagtail.wagtailimages.models import get_image_model
+
 from streamfield_tools.blocks.base import (
     Rendition,
     InvalidRenditionShortName,
     NoTemplateProvided,
     InvalidRendition
+)
+from streamfield_tools.blocks import (
+    RenditionAwareLazyLoadImageChooserBlock,
+    RenditionAwareImageChooserBlock
 )
 
 from streamfield_tools.fields import RegisteredBlockStreamField
@@ -172,7 +178,8 @@ class StreamFieldToolsTestCase(TestCase):
             rendition_aware_test_block.to_python({
                 'image_lazy': 1,
                 'image': 1,
-                'render_as': 'foo'
+                'render_as': 'foo',
+                'image_list': [1, 1, 1]
             })
         )
         self.assertHTMLEqual(
@@ -195,4 +202,20 @@ class StreamFieldToolsTestCase(TestCase):
                 'image'
             ).rendition.verbose_name,
             'Foo'
+        )
+
+    def test_image_chooser_blocks(self):
+        """Tests the 'Rendition Aware' Image Chooser blocks"""
+        x = RenditionAwareLazyLoadImageChooserBlock()
+        y = RenditionAwareImageChooserBlock()
+        img_model = get_image_model()
+        self.assertEqual(
+            x.render_basic(img_model.objects.get(pk=1)),
+            '<img class="lazy" data-original="/media/images/test_image.'
+            'original.png" width="300" height="300" alt="Test Image"/>'
+        )
+        self.assertEqual(
+            y.render_basic(img_model.objects.get(pk=1)),
+            '<img src="/media/images/test_image.original.png" width="300" '
+            'height="300" alt="Test Image">'
         )
