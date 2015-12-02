@@ -28,7 +28,7 @@ rendition_aware_test_block = MultiRenditionStructBlock(
             verbose_name="Foo",
             description="Fooey!",
             path_to_template='rendition_aware_test_block/foo.html',
-            image_rendition='fill-100x100'
+            image_rendition='max-100x100'
         ),
     ),
     addl_renditions_settings_key='rendition_aware_test_block'

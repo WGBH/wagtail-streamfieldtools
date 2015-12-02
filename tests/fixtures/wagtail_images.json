@@ -1,0 +1,57 @@
+[
+{
+    "fields": {
+        "focal_point_width": null,
+        "title": "Test Image",
+        "focal_point_height": null,
+        "created_at": "2015-12-02T00:00:00",
+        "focal_point_x": null,
+        "focal_point_y": null,
+        "height": 300,
+        "width": 300,
+        "file": "original_images/test_image.png",
+        "file_size": null,
+        "uploaded_by_user": null
+    },
+    "model": "wagtailimages.image",
+    "pk": 1
+},
+{
+    "fields": {
+        "spec": "max-200x200"
+    },
+    "model": "wagtailimages.filter",
+    "pk": 1
+},
+{
+    "fields": {
+        "spec": "max-100x100"
+    },
+    "model": "wagtailimages.filter",
+    "pk": 2
+},
+{
+    "fields": {
+        "image": 1,
+        "focal_point_key": "",
+        "filter": 2,
+        "width": 100,
+        "file": "images/test_image.max-100x100.png",
+        "height": 100
+    },
+    "model": "wagtailimages.rendition",
+    "pk": 1
+},
+{
+    "fields": {
+        "image": 1,
+        "focal_point_key": "",
+        "filter": 1,
+        "width": 200,
+        "file": "images/test_image.max-200x200.png",
+        "height": 200
+    },
+    "model": "wagtailimages.rendition",
+    "pk": 2
+}
+]

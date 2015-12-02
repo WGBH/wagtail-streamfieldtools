@@ -61,3 +61,14 @@ STATIC_URL = '/static/'
 
 ROOT_URLCONF = 'tests.urls'
 DEBUG = True
+
+WAGTAIL_RENDITION_SETS = {
+    'rendition_aware_test_block': {
+        'from_settings_rendition': {
+            'verbose_name': 'Settings Defined Non-Core Rendition',
+            'description': "See 'verbose_name'",
+            'template_string': '<h1>Dummy Rendition AHOY!</h1>',
+            'image_rendition': 'max-200x200'
+        }
+    },
+}

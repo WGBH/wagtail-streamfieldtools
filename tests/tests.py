@@ -20,6 +20,7 @@ from streamfield_tools.registry import (
 
 
 class StreamFieldToolsTestCase(TestCase):
+    fixtures = ['wagtail_images']
 
     @override_settings(
         INSTALLED_APPS=('tests.test_find_blocks',)
