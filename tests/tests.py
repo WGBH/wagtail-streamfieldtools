@@ -1,6 +1,14 @@
 from django.core.exceptions import FieldError
+from django.template import Context
+from django.template.loader import TemplateDoesNotExist
 from django.test import TestCase
 from django.test.utils import override_settings
+
+from streamfield_tools.blocks.base import (
+    Rendition,
+    InvalidRenditionShortName,
+    NoTemplateProvided
+)
 
 from streamfield_tools.fields import RegisteredBlockStreamField
 from streamfield_tools.registry import (
@@ -87,3 +95,55 @@ class StreamFieldToolsTestCase(TestCase):
         Ensures a registered block can be unregistered.
         """
         find_blocks()
+
+    def test_rendition(self):
+        """
+        Tests Rendition constructor, exceptions and methods.
+        """
+        self.assertRaises(
+            InvalidRenditionShortName,
+            lambda: Rendition(
+                short_name='foo9-bar*',
+                verbose_name='Foo Bar',
+                description='This is misconfigured Rendition instance.'
+            )
+        )
+
+        self.assertRaises(
+            TemplateDoesNotExist,
+            lambda: Rendition(
+                short_name='foo_bar',
+                verbose_name='Foo Bar',
+                description='This is another misconfigured Rendition '
+                            'instance.',
+                path_to_template='foo/bar.html'
+            )
+        )
+
+        self.assertRaises(
+            NoTemplateProvided,
+            lambda: Rendition(
+                short_name='foo_bar',
+                verbose_name='Foo Bar',
+                description='This is yet another misconfigured Rendition '
+                            'instance.'
+            )
+        )
+
+        template_from_string = Rendition(
+            short_name='foo_bar',
+            verbose_name='Foo Bar',
+            description='This is another misconfigured Rendition '
+                        'instance.',
+            template_string='<h1>{{ title }}</h1>'
+        )
+        self.assertEqual(
+            template_from_string.template.render(
+                Context({'title': 'OH HAI!'})
+            ),
+            '<h1>OH HAI!</h1>'
+        )
+        self.assertEqual(
+            template_from_string.__str__(),
+            'Foo Bar'
+        )
