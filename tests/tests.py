@@ -18,6 +18,8 @@ from streamfield_tools.registry import (
     InvalidBlock
 )
 
+from .blocks import rendition_aware_test_block
+
 
 class StreamFieldToolsTestCase(TestCase):
     fixtures = ['wagtail_images']
@@ -147,4 +149,32 @@ class StreamFieldToolsTestCase(TestCase):
         self.assertEqual(
             template_from_string.__str__(),
             'Foo Bar'
+        )
+
+    def test_renditionawareness(self):
+        """
+        Tests that 'Rendition Aware' blocks render as they should.
+        Also tests the 'renditionaware_image_tags' templatetag.
+        """
+        html = rendition_aware_test_block.render(
+            rendition_aware_test_block.to_python({
+                'image_lazy': 1,
+                'image': 1,
+                'render_as': 'foo'
+            })
+        )
+        self.assertHTMLEqual(
+            html,
+            """
+<div class="image-container">
+    <img src="/media/images/test_image.max-100x100.png"/>
+</div>
+<div class="lazy-image-container">
+    <img src="/media/images/test_image.max-100x100.png" width="100"
+         height="100" alt="Test Image">
+</div>
+<div class="in-template-rendition-image-container">
+    <img src="/media/images/test_image.max-250x250.png" width="250"
+         height="250" alt="Test Image">
+</div>"""
         )

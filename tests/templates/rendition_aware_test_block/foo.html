@@ -1,0 +1,11 @@
+{% load renditionaware_image_tags %}
+<div class="image-container">
+    {% image self.image image_rendition as img %}
+    <img src="{{ img.url }}"/>
+</div>
+<div class="lazy-image-container">
+    {% image self.image_lazy image_rendition %}
+</div>
+<div class="in-template-rendition-image-container">
+    {% image self.image_lazy max-250x250 %}
+</div>
