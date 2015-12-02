@@ -24,20 +24,20 @@ class RegisteredBlockStreamField(StreamField):
             )
         elif exclude_blocks:
             block_types = [
-                (attr_name, block)
-                for attr_name, block in registry_iterator
-                if attr_name not in exclude_blocks
+                (block_type, block)
+                for block_type, block in registry_iterator
+                if block_type not in exclude_blocks
             ]
         elif only_blocks:
             block_types = [
-                (attr_name, block)
-                for attr_name, block in registry_iterator
-                if attr_name in only_blocks
+                (block_type, block)
+                for block_type, block in registry_iterator
+                if block_type in only_blocks
             ]
         else:
             block_types = [
-                (attr_name, block)
-                for attr_name, block in registry_iterator
+                (block_type, block)
+                for block_type, block in registry_iterator
             ]
         block_types = block_types + addl_block_types
         super(RegisteredBlockStreamField, self).__init__(block_types, **kwargs)

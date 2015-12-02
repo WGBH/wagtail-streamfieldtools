@@ -1,8 +1,8 @@
 import copy
 from collections import OrderedDict
+from importlib import import_module
 
 from django.conf import settings
-from django.utils.importlib import import_module
 from django.utils.module_loading import module_has_submodule
 
 from wagtail.wagtailcore.blocks import Block
@@ -29,48 +29,48 @@ class RegisteredBlockStreamFieldRegistry(object):
     def __init__(self):
         self._registry = OrderedDict()
 
-    def _verify_block(self, attr_name, block):
+    def _verify_block(self, block_type, block):
         """
         Verifies a block prior to registration.
         """
-        if attr_name in self._registry:
+        if block_type in self._registry:
             raise AlreadyRegistered(
-                "A block has already been registered to the {} `attr_name` in "
-                "the registry. Either unregister that block before trying to "
-                "register this block under a different `attr_name`".format(
-                    attr_name
+                "A block has already been registered to the {} `block_type` "
+                "in the registry. Either unregister that block before trying "
+                "to register this block under a different `block_type`".format(
+                    block_type
                 )
             )
         if not isinstance(block, Block):
             raise InvalidBlock(
                 "The block you tried register to {} is invalid. Only "
                 "instances of `wagtail.wagtailcore.blocks.Block` may be "
-                "registered with the the block_registry.".format(attr_name)
+                "registered with the the block_registry.".format(block_type)
             )
 
-    def register_block(self, attr_name, block):
+    def register_block(self, block_type, block):
         """
-        Registers `block` to `attr_name` in the registry.
+        Registers `block` to `block_type` in the registry.
         """
 
-        self._verify_block(attr_name, block)
-        self._registry[attr_name] = block
+        self._verify_block(block_type, block)
+        self._registry[block_type] = block
 
-    def unregister_block(self, attr_name):
+    def unregister_block(self, block_type):
         """
-        Unregisters the block associated with `attr_name` from the registry.
+        Unregisters the block associated with `block_type` from the registry.
 
-        If no block is registered to `attr_name`, NotRegistered will raise.
+        If no block is registered to `block_type`, NotRegistered will raise.
         """
-        if attr_name not in self._registry:
+        if block_type not in self._registry:
             raise NotRegistered(
                 'There is no block registered as "{}" with the '
                 'RegisteredBlockStreamFieldRegistry registry.'.format(
-                    attr_name
+                    block_type
                 )
             )
         else:
-            del self._registry[attr_name]
+            del self._registry[block_type]
 
 block_registry = RegisteredBlockStreamFieldRegistry()
 
