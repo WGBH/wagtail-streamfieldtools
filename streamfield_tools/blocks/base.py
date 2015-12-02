@@ -75,12 +75,11 @@ class RenditionMixIn(object):
 
     @rendition.setter
     def rendition(self, value):
-        if not value:
-            pass
-        elif not isinstance(value, Rendition):
-            raise InvalidRendition(
-                'Renditions must be instances of streamfield_tools.'
-                'blocks.base.Rendition'
-            )
-        else:
-            self._rendition = value
+        if value:
+            if not isinstance(value, Rendition):
+                raise InvalidRendition(
+                    'Renditions must be instances of streamfield_tools.'
+                    'blocks.base.Rendition'
+                )
+            else:
+                self._rendition = value

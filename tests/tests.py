@@ -7,7 +7,8 @@ from django.test.utils import override_settings
 from streamfield_tools.blocks.base import (
     Rendition,
     InvalidRenditionShortName,
-    NoTemplateProvided
+    NoTemplateProvided,
+    InvalidRendition
 )
 
 from streamfield_tools.fields import RegisteredBlockStreamField
@@ -151,6 +152,17 @@ class StreamFieldToolsTestCase(TestCase):
             'Foo Bar'
         )
 
+    def test_exception_invalidrendition(self):
+        """Ensures InvalidRendition raises appropriately."""
+        def assign_bad_rendition():
+            rendition_aware_test_block.child_blocks.get(
+                'image'
+            ).rendition = 'foo'
+        self.assertRaises(
+            InvalidRendition,
+            assign_bad_rendition
+        )
+
     def test_renditionawareness(self):
         """
         Tests that 'Rendition Aware' blocks render as they should.
@@ -177,4 +189,10 @@ class StreamFieldToolsTestCase(TestCase):
     <img src="/media/images/test_image.max-250x250.png" width="250"
          height="250" alt="Test Image">
 </div>"""
+        )
+        self.assertEqual(
+            rendition_aware_test_block.child_blocks.get(
+                'image'
+            ).rendition.verbose_name,
+            'Foo'
         )
