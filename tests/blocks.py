@@ -1,11 +1,11 @@
 from streamfield_tools.blocks import (
     Rendition,
-    RenditionAwareStructBlock,
+    MultiRenditionStructBlock,
     RenditionAwareLazyLoadImageChooserBlock,
     RenditionAwareImageChooserBlock
 )
 
-rendition_aware_test_block = RenditionAwareStructBlock(
+rendition_aware_test_block = MultiRenditionStructBlock(
     [
         (
             'image_lazy',
