@@ -28,4 +28,5 @@ Includes:
 
 TODO:
 
+- Dual support for both Python 2 (supported) and 3 (currently unsupported).
 - Docs (with useful, easy-to-follow examples)!
