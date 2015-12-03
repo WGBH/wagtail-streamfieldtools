@@ -26,7 +26,20 @@ Includes:
 - A simple interface for displaying the individual blocks of a ``StreamField`` in any number of renditions.
 - A 'block registry' (and its associated field, ``RegisteredBlockStreamField``) that makes blocks pluggable/re-usable across disparate models/apps/projects.
 
+Compatibility
+-------------
+
+- Python:
+
+  - 2.7
+  - 3.3
+  - 3.4
+
+- `Wagtail <https://wagtail.io/>`_:
+
+  - 1.1
+  - 1.2
+
 TODO:
 
-- Dual support for both Python 2 (supported) and 3 (currently unsupported).
 - Docs (with useful, easy-to-follow examples)!
