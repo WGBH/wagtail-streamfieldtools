@@ -5,16 +5,19 @@ from django.test import TestCase
 from django.test.utils import override_settings
 
 from wagtail.wagtailimages.models import get_image_model
+from wagtail.wagtailcore.blocks import CharBlock
 
-from streamfield_tools.blocks.base import (
-    Rendition,
-    InvalidRenditionShortName,
-    NoTemplateProvided,
-    InvalidRendition
-)
 from streamfield_tools.blocks import (
+    InvalidRendition,
+    InvalidRenditionShortName,
+    MultiRenditionStructBlock,
+    NoTemplateProvided,
+    Rendition,
+    RenditionAwareImageChooserBlock,
     RenditionAwareLazyLoadImageChooserBlock,
-    RenditionAwareImageChooserBlock
+    RenditionAwareStreamBlock,
+    RenditionAwareStructBlock,
+    TemplateRequired,
 )
 
 from streamfield_tools.fields import RegisteredBlockStreamField
@@ -169,6 +172,14 @@ class StreamFieldToolsTestCase(TestCase):
             assign_bad_rendition
         )
 
+        self.assertRaises(
+            InvalidRendition,
+            lambda: MultiRenditionStructBlock(
+                [('foo', CharBlock())],
+                core_renditions=([],)
+            )
+        )
+
     def test_renditionawareness(self):
         """
         Tests that 'Rendition Aware' blocks render as they should.
@@ -218,4 +229,96 @@ class StreamFieldToolsTestCase(TestCase):
             y.render_basic(img_model.objects.get(pk=1)),
             '<img src="/media/images/test_image.original.png" width="300" '
             'height="300" alt="Test Image">'
+        )
+
+    def test_renditionawarestreamblock(self):
+        """
+        Tests streamfield_tools.blocks.RenditionAwareStreamBlock
+        """
+        test_stream_block = RenditionAwareStreamBlock(
+            [('bar', CharBlock()), ('baz', CharBlock())]
+        )
+
+        test_rendition = Rendition(
+            short_name='foo',
+            verbose_name="Foo",
+            description="Foo Rendition",
+            path_to_template='rendition_aware_struct_block/foo.html'
+        )
+
+        test_stream_block.rendition = test_rendition
+        html = test_stream_block.render(
+            test_stream_block.to_python([
+                {'type': 'bar', 'value': 'Bar'},
+                {'type': 'baz', 'value': 'Baz'},
+            ])
+        )
+        self.assertHTMLEqual(
+            html,
+            """
+<div class="block-bar">Bar</div>
+<div class="block-baz">Baz</div>"""
+        )
+
+    def test_multirenditionstructblock(self):
+        """Tests streamfield_tools.blocks.RenditionAwareStructBlock"""
+        missing_template_block = RenditionAwareStructBlock(
+            [('bar', CharBlock()), ('baz', CharBlock())],
+        )
+        self.assertRaises(
+            TemplateRequired,
+            lambda: missing_template_block.render(
+                missing_template_block.to_python({
+                    'bar': 'Test Bar',
+                    'baz': 'Test Baz'
+                })
+            )
+        )
+        test_block = MultiRenditionStructBlock(
+            [
+                ('foo', CharBlock()),
+                (
+                    'struct_block', RenditionAwareStructBlock(
+                        [('bar', CharBlock()), ('baz', CharBlock())],
+                        template='rendition_aware_struct_block/'
+                                 'nested_struct_foo.html',
+                        template_bar='rendition_aware_struct_block/'
+                                     'nested_struct_bar.html'
+                    )
+                )
+            ],
+            core_renditions=(
+                Rendition(
+                    short_name='foo',
+                    verbose_name="Foo",
+                    description="Foo Rendition",
+                    path_to_template='rendition_aware_struct_block/foo.html'
+                ),
+                Rendition(
+                    short_name='bar',
+                    verbose_name="Bar",
+                    description="Bar Rendition",
+                    path_to_template='rendition_aware_struct_block/bar.html'
+                ),
+            )
+        )
+        html = test_block.render(
+            test_block.to_python({
+                'render_as': 'foo',
+                'struct_block': {
+                    'bar': 'Bar',
+                    'baz': 'Baz'
+
+                }
+            })
+        )
+        self.assertHTMLEqual(
+            html,
+            """
+<h1>Foo Template</h1>
+<div class="nested-foo">
+    <p>Bar</p>
+    <p>Baz</p>
+</div>
+            """
         )

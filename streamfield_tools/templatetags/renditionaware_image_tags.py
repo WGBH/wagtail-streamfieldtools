@@ -13,35 +13,16 @@ def image(parser, token):
     image_expr = parser.compile_filter(bits[0])
     filter_spec = bits[1]
     bits = bits[2:]
-
+    node_kwargs = {}
     if len(bits) == 2 and bits[0] == 'as':
         # token is of the form {% image self.photo max-320x200 as img %}
-        return VariableOrStringLiteralImageNode(
-            image_expr,
-            filter_spec,
-            output_var_name=bits[1]
-        )
-    else:
-        # token is of the form {% image self.photo max-320x200 %} - all additional tokens
-        # should be kwargs, which become attributes
-        attrs = {}
-        for bit in bits:
-            try:
-                name, value = bit.split('=')
-            except ValueError:
-                raise template.TemplateSyntaxError(
-                    "'image' tag should be of the form {% image self.photo "
-                    "max-320x200 [ custom-attr=\"value\" ... ] %} or "
-                    "{% image self.photo max-320x200 as img %}"
-                )
-            # setup to resolve context variables as value
-            attrs[name] = parser.compile_filter(value)
+        node_kwargs['output_var_name'] = bits[1]
 
-        return VariableOrStringLiteralImageNode(
-            image_expr,
-            filter_spec,
-            attrs=attrs
-        )
+    return VariableOrStringLiteralImageNode(
+        image_expr,
+        filter_spec,
+        **node_kwargs
+    )
 
 
 class VariableOrStringLiteralImageNode(ImageNode):
