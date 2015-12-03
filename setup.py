@@ -5,7 +5,7 @@ from setuptools import find_packages
 setup(
     name='wagtail-streamfieldtools',
     packages=find_packages(),
-    version='0.1',
+    version='0.2',
     author=u'Jonathan Ellenberger',
     author_email='jonathan_ellenberger@wgbh.org',
     url='http://github.com/WGBH/wagtail-streamfieldtools/',
@@ -14,7 +14,7 @@ setup(
                 "StreamField to make it even more flexible/versatile/useful!",
     long_description=open('README.rst').read(),
     zip_safe=False,
-    install_requires=['wagtail>=1.2'],
+    install_requires=['wagtail>=1.1'],
     classifiers=[
         'Framework :: Django',
         'Framework :: Django :: 1.8',
@@ -23,6 +23,9 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
         'Development Status :: 3 - Alpha'
     ]
 )
