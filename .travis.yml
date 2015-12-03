@@ -10,6 +10,7 @@ python:
   - "3.4"
 # List the versions of Django you'd like to test against
 env:
+  - WAGTAIL_VERSION=1.1
   - WAGTAIL_VERSION=1.2
 before_install:
   - export DJANGO_SETTINGS_MODULE=tests.test_settings
