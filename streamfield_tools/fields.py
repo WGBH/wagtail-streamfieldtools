@@ -39,5 +39,6 @@ class RegisteredBlockStreamField(StreamField):
                 (block_type, block)
                 for block_type, block in registry_iterator
             ]
-        block_types = block_types + addl_block_types
+        if isinstance(addl_block_types, list):
+            block_types = block_types + addl_block_types
         super(RegisteredBlockStreamField, self).__init__(block_types, **kwargs)
