@@ -29,4 +29,3 @@ Includes:
 TODO:
 
 - Docs (with useful, easy-to-follow examples)!
-- Tests!
