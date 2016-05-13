@@ -39,7 +39,7 @@ class StreamFieldToolsTestCase(TestCase):
     )
     def test_find_blocks(self):
         """
-        Ensures streamfield_tools.registry.find_blocks raises the
+        Ensure streamfield_tools.registry.find_blocks raises the
         appropriate exception when trying to import on registered_blocks.py
         modules.
         """
@@ -53,7 +53,7 @@ class StreamFieldToolsTestCase(TestCase):
     )
     def test_exception_alreadyregistered(self):
         """
-        Ensures AlreadyRegistered is raised when trying to register a block
+        Ensure AlreadyRegistered is raised when trying to register a block
         with an already-registered block_type.
         """
         self.assertRaises(
@@ -66,7 +66,7 @@ class StreamFieldToolsTestCase(TestCase):
     )
     def test_exception_invalidblock(self):
         """
-        Ensures InvalidBlock raises when trying to register a block that is
+        Ensure InvalidBlock raises when trying to register a block that is
         not an instance of wagtail.wagtailcore.blocks.Block
         """
         self.assertRaises(
@@ -79,7 +79,7 @@ class StreamFieldToolsTestCase(TestCase):
     )
     def test_exception_notregistered(self):
         """
-        Ensures NotRegistered raises when trying to unregister a block that is
+        Ensure NotRegistered raises when trying to unregister a block that is
         not yet registered.
         """
         self.assertRaises(
@@ -89,7 +89,7 @@ class StreamFieldToolsTestCase(TestCase):
 
     def test_exception_fielderror(self):
         """
-        Ensures FieldError raises if a RegisteredBlockStreamField is defined
+        Ensure FieldError raises if a RegisteredBlockStreamField is defined
         that specifies both the `exclude_blocks` and `only_blocks` kwargs.
         """
         self.assertRaises(
@@ -105,13 +105,13 @@ class StreamFieldToolsTestCase(TestCase):
     )
     def test_unregister_block(self):
         """
-        Ensures a registered block can be unregistered.
+        Ensure a registered block can be unregistered.
         """
         find_blocks()
 
     def test_rendition(self):
         """
-        Tests Rendition constructor, exceptions and methods.
+        Test Rendition constructor, exceptions and methods.
         """
         self.assertRaises(
             InvalidRenditionShortName,
@@ -162,7 +162,7 @@ class StreamFieldToolsTestCase(TestCase):
         )
 
     def test_exception_invalidrendition(self):
-        """Ensures InvalidRendition raises appropriately."""
+        """Ensure InvalidRendition raises appropriately."""
         def assign_bad_rendition():
             rendition_aware_test_block.child_blocks.get(
                 'image'
@@ -182,7 +182,7 @@ class StreamFieldToolsTestCase(TestCase):
 
     def test_renditionawareness(self):
         """
-        Tests that 'Rendition Aware' blocks render as they should.
+        Test that 'Rendition Aware' blocks render as they should.
         Also tests the 'renditionaware_image_tags' templatetag.
         """
         html = rendition_aware_test_block.render(
@@ -216,7 +216,7 @@ class StreamFieldToolsTestCase(TestCase):
         )
 
     def test_image_chooser_blocks(self):
-        """Tests the 'Rendition Aware' Image Chooser blocks"""
+        """Test the 'Rendition Aware' Image Chooser blocks"""
         x = RenditionAwareLazyLoadImageChooserBlock()
         y = RenditionAwareImageChooserBlock()
         img_model = get_image_model()
@@ -233,7 +233,7 @@ class StreamFieldToolsTestCase(TestCase):
 
     def test_renditionawarestreamblock(self):
         """
-        Tests streamfield_tools.blocks.RenditionAwareStreamBlock
+        Test streamfield_tools.blocks.RenditionAwareStreamBlock
         """
         test_stream_block = RenditionAwareStreamBlock(
             [('bar', CharBlock()), ('baz', CharBlock())]
@@ -261,7 +261,7 @@ class StreamFieldToolsTestCase(TestCase):
         )
 
     def test_multirenditionstructblock(self):
-        """Tests streamfield_tools.blocks.RenditionAwareStructBlock"""
+        """Test streamfield_tools.blocks.RenditionAwareStructBlock"""
         missing_template_block = RenditionAwareStructBlock(
             [('bar', CharBlock()), ('baz', CharBlock())],
         )
