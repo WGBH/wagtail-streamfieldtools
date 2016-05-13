@@ -40,6 +40,43 @@ Compatibility
   - 1.1
   - 1.2
 
-TODO:
+Installation
+------------
 
-- Docs (with useful, easy-to-follow examples)!
+First, install with:
+
+.. code-block:: bash
+
+    $ pip install wagtail-streamfieldtools
+
+After installation completes, add ``'streamfield_tools'`` to
+``INSTALLED_APPS``:
+
+.. code-block:: python
+
+    INSTALLED_APPS = (
+        # All your other apps here
+        'streamfield_tools',
+    )
+
+Running Tests
+-------------
+
+To run tests, first create a new virtual environment and install the test requirements:
+
+.. code-block:: bash
+
+    $ virtualenv TEST_ENV
+    $ pip install -r test_requirements.txt
+
+Then run the test suite with this command:
+
+.. code-block:: bash
+
+    $ coverage run --source streamfield_tools/ runtests.py
+
+If all tests pass, then push your code to Github where Travis CI will tests against the entire dependency matrix. If [all tests passed there](https://travis-ci.org/WGBH/wagtail-streamfieldtools), then [head over to Coveralls](https://coveralls.io/github/WGBH/wagtail-streamfieldtools) to ensure your coverage has remained the same.
+
+If the tests passed and coverage remained the same then it's time to release to PyPI!
+
+
