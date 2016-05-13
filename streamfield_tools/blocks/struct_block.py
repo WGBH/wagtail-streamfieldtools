@@ -70,19 +70,27 @@ class MultiRenditionStructBlock(StructBlock):
             **kwargs
         )
 
-    def render(self, value):
-        """
-        Find the appropriate rendition.
-        """
+    def get_rendition(self, value):
+        """Return the rendition associated with `value`."""
+        return self._rendition_set_config.get(
+            value['render_as']
+        )
+
+    def get_context(self, value):
+        context = super(MultiRenditionStructBlock, self).get_context(
+            value
+        )
         rendition = self._rendition_set_config.get(
             value['render_as']
         )
-        context = self.get_context(value)
-        context['self'] = value
         context['image_rendition'] = rendition.image_rendition or 'original'
         context['addl_classes'] = value['addl_classes']
+        return context
+
+    def render(self, value):
+        rendition = self.get_rendition(value)
         return rendition.template.render(
-            context
+            self.get_context(value)
         )
 
     def to_python(self, value):
