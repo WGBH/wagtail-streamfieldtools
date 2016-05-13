@@ -22,7 +22,6 @@ INSTALLED_APPS = (
     'wagtail.contrib.wagtailstyleguide',
 
     'modelcluster',
-    'compressor',
     'taggit',
 
     'django.contrib.admin',

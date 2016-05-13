@@ -220,12 +220,12 @@ class StreamFieldToolsTestCase(TestCase):
         x = RenditionAwareLazyLoadImageChooserBlock()
         y = RenditionAwareImageChooserBlock()
         img_model = get_image_model()
-        self.assertEqual(
+        self.assertHTMLEqual(
             x.render_basic(img_model.objects.get(pk=1)),
             '<img class="lazy" data-original="/media/images/test_image.'
             'original.png" width="300" height="300" alt="Test Image"/>'
         )
-        self.assertEqual(
+        self.assertHTMLEqual(
             y.render_basic(img_model.objects.get(pk=1)),
             '<img src="/media/images/test_image.original.png" width="300" '
             'height="300" alt="Test Image">'
