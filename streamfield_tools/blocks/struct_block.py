@@ -72,7 +72,7 @@ class MultiRenditionStructBlock(StructBlock):
 
     def render(self, value):
         """
-        Finds the appropriate rendition
+        Find the appropriate rendition.
         """
         rendition = self._rendition_set_config.get(
             value['render_as']
@@ -127,7 +127,7 @@ class RenditionAwareStructBlock(RenditionMixIn, StructBlock):
                 template,
                 {
                     'self': value,
-                    'image_rendition': self.rendition.image_rendition
-                    or 'original'
+                    'image_rendition': self.rendition.
+                    image_rendition or 'original'
                 }
             )
