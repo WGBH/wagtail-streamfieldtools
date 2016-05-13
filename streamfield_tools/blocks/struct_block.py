@@ -77,12 +77,12 @@ class MultiRenditionStructBlock(StructBlock):
         rendition = self._rendition_set_config.get(
             value['render_as']
         )
+        context = self.get_context(value)
+        context['self'] = value
+        context['image_rendition'] = rendition.image_rendition or 'original'
+        context['addl_classes'] = value['addl_classes']
         return rendition.template.render(
-            {
-                'self': value,
-                'image_rendition': rendition.image_rendition or 'original',
-                'addl_classes': value['addl_classes']
-            }
+            context
         )
 
     def to_python(self, value):
@@ -107,6 +107,13 @@ class RenditionAwareStructBlock(RenditionMixIn, StructBlock):
     class Meta:
         template = None
 
+    def get_context(self, value):
+        """Ensure `image_rendition` is added to the global context."""
+        context = super(RenditionAwareStructBlock, self).get_context(value)
+        context['image_rendition'] = self.rendition.\
+            image_rendition or 'original'
+        return context
+
     def render(self, value):
         if self.meta.template is None:
             raise TemplateRequired(
@@ -123,11 +130,4 @@ class RenditionAwareStructBlock(RenditionMixIn, StructBlock):
             except AttributeError:
                 template = self.meta.template
 
-            return render_to_string(
-                template,
-                {
-                    'self': value,
-                    'image_rendition': self.rendition.
-                    image_rendition or 'original'
-                }
-            )
+            return render_to_string(template, self.get_context(value))
