@@ -32,13 +32,16 @@ Compatibility
 - Python:
 
   - 2.7
-  - 3.3
   - 3.4
+  - 3.5
 
 - `Wagtail <https://wagtail.io/>`_:
 
-  - 1.1
   - 1.2
+  - 1.3
+  - 1.4
+
+.. note:: If you want to use Python 3.3 or Wagtail 1.1 install the 0.2 release.
 
 Installation
 ------------
@@ -78,5 +81,3 @@ Then run the test suite with this command:
 If all tests pass, then push your code to Github where Travis CI will tests against the entire dependency matrix. If [all tests passed there](https://travis-ci.org/WGBH/wagtail-streamfieldtools), then [head over to Coveralls](https://coveralls.io/github/WGBH/wagtail-streamfieldtools) to ensure your coverage has remained the same.
 
 If the tests passed and coverage remained the same then it's time to release to PyPI!
-
-
