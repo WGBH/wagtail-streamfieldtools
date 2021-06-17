@@ -16,6 +16,6 @@ pyflakes==1.0.0
 pytz==2015.7
 six==1.10.0
 Unidecode==0.4.18
-wagtail==1.2
+wagtail==2.11.8
 wheel==0.26.0
 Willow==0.2.1
